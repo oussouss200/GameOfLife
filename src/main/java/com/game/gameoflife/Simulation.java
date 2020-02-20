@@ -51,7 +51,6 @@ public class Simulation {
 
         return count;
     }
-
     public int getState(int x, int y) {
         if (x < 0 || x >= width) {
             return 0;
