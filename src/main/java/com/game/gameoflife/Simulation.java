@@ -1,5 +1,11 @@
 package com.game.gameoflife;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class Simulation {
     int width;
     int height;
@@ -12,9 +18,8 @@ public class Simulation {
     }
 
     public void printBoard(){
-        System.out.println("---");
         for (int y = 0; y < height; y++) {
-            String line = "|";
+            String line = "";
             for (int x = 0; x < width; x++) {
                 if (this.board[x][y] == 0){
                     line += ".";
@@ -22,10 +27,10 @@ public class Simulation {
                     line += "*";
                 }
             }
-            line += "|";
+            line += "";
             System.out.println(line);
         }
-        System.out.println("---\n");
+        System.out.println("\n");
     }
 
     public void setAlive(int x, int y){
@@ -90,20 +95,52 @@ public class Simulation {
         this.board = newBoard;
     }
 
-    public static void main(String[] args) {
-        Simulation simulation = new Simulation( 8,5);
 
-        simulation.setAlive(2,2);
-        simulation.setAlive(3,2);
-        simulation.setAlive(4,2);
 
-        simulation.printBoard();
-        simulation.step();
 
-        simulation.printBoard();
-        simulation.step();
+    public static void main(String[] args)  {
 
-        simulation.printBoard();
+        /* ------- Charger le fichier texte et retourner un Arrayliste contenant les lignes du
+         fichier pour les traiter indépendamment ---------*/
+
+        File file = new File("inPutTextFile.txt");
+        ArrayList<String> fileArrayList = new ArrayList<>();
+        try {
+            fileArrayList = file.readFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        /* ------- dégager les height et le width de laligne 2 --------*/
+
+        String[] heightWidth = fileArrayList.get(1).split(" ");
+        int height = Integer.parseInt(heightWidth[0].trim());
+        int width = Integer.parseInt(heightWidth[1].trim());
+
+        /* ---------- Créer l'objet simulation avec nos height et width  -----------*/
+
+        Simulation simulation = new Simulation(width,height);
+
+        /* --------- Traiter le reste des lignes du fichier pour savoir quelles sont les
+                     cellules vivantes et celles mortes -----------*/
+
+        for (int y = 2; y < fileArrayList.size(); y++) {
+            for (int x = 0; x < width; x++) {
+                if(fileArrayList.get(y).trim().charAt(x) == '*'){
+                    simulation.setAlive(x,y-2);
+                }
+            }
+        }
+
+        /* ---------- Simulation ------------*/
+
+        int nombreSimulation = 3;
+        for (int i = 1; i <= nombreSimulation; i++) {
+            System.out.println("Génération " + Integer.toString(i) + ":");
+            System.out.println( height + " " + width);
+            simulation.printBoard();
+            simulation.step();
+        }
 
     }
 }
