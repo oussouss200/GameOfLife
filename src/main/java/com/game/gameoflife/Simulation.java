@@ -17,6 +17,18 @@ public class Simulation {
         this.board = new int[width][height];
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int[][] getBoard() {
+        return board;
+    }
+
     public void printBoard(){
         for (int y = 0; y < height; y++) {
             String line = "";
@@ -31,6 +43,9 @@ public class Simulation {
             System.out.println(line);
         }
         System.out.println("\n");
+    }
+    public void setState(int x, int y,int state){
+        this.board[x][y] = state;
     }
 
     public void setAlive(int x, int y){
@@ -68,7 +83,7 @@ public class Simulation {
         return this.board[x][y];
     }
 
-    public void step() {
+    public int[][] step() {
         int[][] newBoard = new int[width][height];
 
         for (int y = 0; y < height; y++) {
@@ -92,37 +107,18 @@ public class Simulation {
             }
         }
 
-        this.board = newBoard;
+        //this.board = newBoard;
+        return newBoard;
     }
 
-
-
-
     public static void main(String[] args)  {
-
-        /* ------- Charger le fichier texte et retourner un Arrayliste contenant les lignes du
-         fichier pour les traiter indépendamment ---------*/
-
         File file = new File("inPutTextFile.txt");
-        ArrayList<String> fileArrayList = new ArrayList<>();
-        try {
-            fileArrayList = file.readFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        /* ------- dégager les height et le width de laligne 2 --------*/
-
-        String[] heightWidth = fileArrayList.get(1).split(" ");
-        int height = Integer.parseInt(heightWidth[0].trim());
-        int width = Integer.parseInt(heightWidth[1].trim());
-
-        /* ---------- Créer l'objet simulation avec nos height et width  -----------*/
-
+        ArrayList<String> fileArrayList = file.extractLines();
+        int height = file.extractHeight(fileArrayList);
+        int width = file.extractWidth(fileArrayList);
         Simulation simulation = new Simulation(width,height);
 
-        /* --------- Traiter le reste des lignes du fichier pour savoir quelles sont les
-                     cellules vivantes et celles mortes -----------*/
+        /* ---------- Revive cells ------------*/
 
         for (int y = 2; y < fileArrayList.size(); y++) {
             for (int x = 0; x < width; x++) {
@@ -135,11 +131,15 @@ public class Simulation {
         /* ---------- Simulation ------------*/
 
         int nombreSimulation = 3;
-        for (int i = 1; i <= nombreSimulation; i++) {
+        System.out.println("Génération " + Integer.toString(1) + ":");
+        System.out.println( height + " " + width);
+        simulation.printBoard();
+        for (int i = 2; i <= nombreSimulation; i++) {
+            int [][] stepOnBoard = simulation.step();
+            simulation.board = stepOnBoard;
             System.out.println("Génération " + Integer.toString(i) + ":");
             System.out.println( height + " " + width);
             simulation.printBoard();
-            simulation.step();
         }
 
     }

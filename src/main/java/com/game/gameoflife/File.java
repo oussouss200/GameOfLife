@@ -32,4 +32,26 @@ public class File {
         return result;
     }
 
+    public ArrayList<String> extractLines(){
+        ArrayList<String> fileArrayList = new ArrayList<>();
+        try {
+            fileArrayList = this.readFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fileArrayList;
+    }
+    public int extractHeight(ArrayList<String> fileArrayList){
+        String[] heightWidth = fileArrayList.get(1).split(" ");
+        int height = Integer.parseInt(heightWidth[0].trim());
+        return height;
+    }
+
+    public int extractWidth(ArrayList<String> fileArrayList){
+        String[] heightWidth = fileArrayList.get(1).split(" ");
+        int width = Integer.parseInt(heightWidth[1].trim());
+        return width;
+    }
+
+
 }
