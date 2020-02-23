@@ -36,6 +36,7 @@ public class SimulationTest {
         }
     }
 
+    // testing the function which count neighbours
     @Test
     @Parameters({"0,0,0",
                  "1,0,0",
@@ -78,17 +79,21 @@ public class SimulationTest {
         assertEquals(expected,actual);
     }
 
+    // testing the fucntion which set a cell alive
     @Test
     public void testSetAlive() {
         testSimulation.setAlive(0, 0);
         assertEquals(1, testSimulation.getState(0, 0));
     }
+
+    // testing the fucntion which set a cell dead
     @Test
     public void testSetDead() {
         testSimulation.setDead(0, 0);
         assertEquals(0, testSimulation.getState(0, 0));
     }
 
+    // testing function which set state of a cell
     @Test
     public void testSetSate(){
         testSimulation.setState(0,0,1);
@@ -96,6 +101,8 @@ public class SimulationTest {
         assertEquals(1,actual);
     }
 
+
+    // testing function which get state according to the file
     @Test
     @Parameters({"0,0,0",
             "1,0,0",
@@ -138,6 +145,7 @@ public class SimulationTest {
             assertEquals("wrong cell value ",expected,actual);
     }
 
+    // testing function which step on and reshape the board
     @Test
     @Parameters({"1,0,0",
                  "1,0,1",

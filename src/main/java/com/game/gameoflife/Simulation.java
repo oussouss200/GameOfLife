@@ -1,9 +1,5 @@
 package com.game.gameoflife;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Simulation {
@@ -29,6 +25,8 @@ public class Simulation {
         return board;
     }
 
+// function for drawing our board
+
     public void printBoard(){
         for (int y = 0; y < height; y++) {
             String line = "";
@@ -44,16 +42,26 @@ public class Simulation {
         }
         System.out.println("\n");
     }
+
+    // function returns the state (alive or dead) of a cell
+
     public void setState(int x, int y,int state){
         this.board[x][y] = state;
     }
 
+    // function to set a cell alive
+
     public void setAlive(int x, int y){
         this.board[x][y] = 1;
     }
+
+    // function to set a cell dead
+
     public void setDead(int x, int y){
         this.board[x][y] = 0;
     }
+
+    // function to count then number of neighbours (alive cells) of a cell
 
     public int countAliveNeighbours(int x, int y) {
         int count = 0;
@@ -82,6 +90,8 @@ public class Simulation {
 
         return this.board[x][y];
     }
+
+    // fucntion to get the next state of all the board
 
     public int[][] step() {
         int[][] newBoard = new int[width][height];
@@ -112,14 +122,19 @@ public class Simulation {
     }
 
     public static void main(String[] args)  {
+
+        //read the file
         File file = new File("inPutTextFile.txt");
+
+        //get informations from file
         ArrayList<String> fileArrayList = file.extractLines();
         int height = file.extractHeight(fileArrayList);
         int width = file.extractWidth(fileArrayList);
+
+        //create a Simulation object
         Simulation simulation = new Simulation(width,height);
 
-        /* ---------- Revive cells ------------*/
-
+        //Revive cells
         for (int y = 2; y < fileArrayList.size(); y++) {
             for (int x = 0; x < width; x++) {
                 if(fileArrayList.get(y).trim().charAt(x) == '*'){
@@ -128,8 +143,7 @@ public class Simulation {
             }
         }
 
-        /* ---------- Simulation ------------*/
-
+        //Simulation
         int nombreSimulation = 3;
         System.out.println("Génération " + Integer.toString(1) + ":");
         System.out.println( height + " " + width);
